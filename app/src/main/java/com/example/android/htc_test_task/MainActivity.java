@@ -3,27 +3,19 @@ package com.example.android.htc_test_task;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String request = "http://www.mocky.io/v2/56fa31e0110000f920a72134";
+    private final String REQUEST = "http://www.mocky.io/v2/56fa31e0110000f920a72134";
+
     private TextView mTextView;
 
     @Override
@@ -38,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mTextView = (TextView)findViewById(R.id.textView);
 
         try {
-            URL url = new URL(request);
+            URL url = new URL(REQUEST);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("GET");
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));

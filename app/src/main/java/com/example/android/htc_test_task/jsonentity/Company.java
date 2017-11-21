@@ -1,4 +1,4 @@
-package com.example.android.htc_test_task;
+package com.example.android.htc_test_task.jsonentity;
 
 import java.util.List;
 

@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.example.android.htc_test_task.jsonentity.Company;
+import com.example.android.htc_test_task.jsonentity.Employee;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.io.IOUtils;
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
             Company htc = gson.fromJson(String.valueOf(json.getJSONObject("company")), Company.class);
             List<Employee> employees = htc.getEmployees();
             Collections.sort(employees);
+            for (Employee employee: employees) {
+                employee.sortSkills();
+            }
             mListView = (ListView)findViewById(R.id.lv);
             ArrayAdapter<Employee> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employees);
             mListView.setAdapter(adapter);

@@ -1,7 +1,8 @@
-package com.example.android.htc_test_task;
+package com.example.android.htc_test_task.jsonentity;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,6 +39,10 @@ public class Employee implements Comparable<Employee> {
         this.skills = skills;
     }
 
+    public void sortSkills() {
+        Collections.sort(skills);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,10 +67,14 @@ public class Employee implements Comparable<Employee> {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append(name + " ");
-        result.append(phoneNumber + " ");
-        for (String skill: skills) {
-            result.append(skill + " ");
+        result.append("Name: " + name + "\n");
+        result.append("Phone number: " + phoneNumber + "\n");
+        result.append("Skills: ");
+        for (int i = 0; i < skills.size(); i++) {
+            result.append(skills.get(i));
+            if (i != skills.size() - 1) {
+                result.append(", ");
+            }
         }
         return result.toString();
     }

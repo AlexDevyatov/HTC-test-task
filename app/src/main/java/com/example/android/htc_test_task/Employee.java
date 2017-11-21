@@ -1,13 +1,16 @@
 package com.example.android.htc_test_task;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
  * Created by Алексей on 20.11.2017.
  */
 
-public class Employee {
+public class Employee implements Comparable<Employee> {
     private String name;
+    @SerializedName("phone_number")
     private String phoneNumber;
     private List<String> skills;
 
@@ -46,7 +49,6 @@ public class Employee {
         if (phoneNumber != null ? !phoneNumber.equals(employee.phoneNumber) : employee.phoneNumber != null)
             return false;
         return skills != null ? skills.equals(employee.skills) : employee.skills == null;
-
     }
 
     @Override
@@ -55,5 +57,21 @@ public class Employee {
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (skills != null ? skills.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append(name + " ");
+        result.append(phoneNumber + " ");
+        for (String skill: skills) {
+            result.append(skill + " ");
+        }
+        return result.toString();
+    }
+
+    @Override
+    public int compareTo(Employee o) {
+        return name.compareTo(o.name);
     }
 }

@@ -3,20 +3,28 @@ package com.example.android.htc_test_task;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
-import java.io.BufferedReader;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private final String REQUEST = "http://www.mocky.io/v2/56fa31e0110000f920a72134";
+    private final String TAG = "MainActivity";
 
-    private TextView mTextView;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,30 +33,29 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        //ListView listView = (ListView)findViewById(R.id.lvMain);
-        mTextView = (TextView)findViewById(R.id.textView);
-
         try {
             URL url = new URL(REQUEST);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("GET");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-            StringBuilder result = new StringBuilder();
-            while (true) {
-                String line = reader.readLine();
-                if (line == null) {
-                    break;
-                }
-                result.append(line);
-            }
-            reader.close();
-            mTextView.setText(result);
+            String response = IOUtils.toString(connection.getInputStream(), Charset.forName("UTF-8"));
+            Gson gson = new GsonBuilder().create();
+            JSONObject json = new JSONObject(response);
+            Company htc = gson.fromJson(String.valueOf(json.getJSONObject("company")), Company.class);
+            List<Employee> employees = htc.getEmployees();
+            Collections.sort(employees);
+            mListView = (ListView)findViewById(R.id.lv);
+            ArrayAdapter<Employee> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employees);
+            mListView.setAdapter(adapter);
+            Log.i(TAG, "OK");
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            Log.e(TAG, "MalformedURLException");
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e(TAG, "IOException");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "JSONException");
         }
-
     }
 }
